@@ -1,0 +1,19 @@
+# Xcode
+build/
+DerivedData/
+*.xcworkspace
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.build/
+Packages/
+
+# CocoaPods
+Pods/
+Podfile.lock
