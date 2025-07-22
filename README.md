@@ -131,3 +131,11 @@ SwiftUIを用いて開発し、直感的で使いやすいUIを実現します�
 
 本設計により、社員がスムーズにログインし、QRコードを活用して簡単に商品を購入できる環境を提供します。
 エラーハンドリングやオフライン対応を強化し、安定した動作を実現します。
+
+#### 4. Info.plist 設定
+
+NFCおよびカメラ機能を利用するため、以下のキーをInfo.plistに追加してください。
+
+- `NFCReaderUsageDescription` : "社員証の読み取りにNFCを使用します"
+- `com.apple.developer.nfc.readersession.formats` : `NDEF`
+- `NSCameraUsageDescription` : "QRコード読み取りにカメラを使用します"
