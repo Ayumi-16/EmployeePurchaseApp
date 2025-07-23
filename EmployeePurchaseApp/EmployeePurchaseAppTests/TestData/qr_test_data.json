@@ -1,0 +1,93 @@
+{
+  "valid_products": [
+    {
+      "product_id": "SHOE001",
+      "name": "テストランニングシューズ",
+      "category": "shoes",
+      "price": 8000,
+      "sizes": ["S", "M", "L", "XL"],
+      "stock": 10,
+      "brand": "TestSport",
+      "notes": "軽量で快適なランニングシューズ"
+    },
+    {
+      "product_id": "ACC001",
+      "name": "テストスポーツバッグ",
+      "category": "accessories",
+      "price": 3000,
+      "sizes": ["F"],
+      "stock": 5,
+      "brand": "TestBag",
+      "notes": "多機能スポーツバッグ"
+    },
+    {
+      "product_id": "CLOTH001",
+      "name": "テストTシャツ",
+      "category": "clothing",
+      "price": 2500,
+      "sizes": ["XS", "S", "M", "L", "XL", "XXL"],
+      "stock": 20,
+      "brand": "TestWear",
+      "notes": "吸汗速乾素材のTシャツ"
+    },
+    {
+      "product_id": "SOLD001",
+      "name": "売り切れ商品",
+      "category": "limited",
+      "price": 5000,
+      "sizes": ["M"],
+      "stock": 0,
+      "brand": "TestLimited",
+      "notes": "限定商品（売り切れ）"
+    }
+  ],
+  "invalid_qr_codes": [
+    "invalid_json_data",
+    "",
+    "{\"incomplete\": \"data\"}",
+    "{\"product_id\":\"INCOMPLETE001\",\"name\":\"不完全商品\"}",
+    "{\"name\":\"名前のみ商品\",\"price\":1000}",
+    "not_json_at_all",
+    "{malformed json}",
+    "null",
+    "[]"
+  ],
+  "test_scenarios": [
+    {
+      "name": "Valid Shoe Product",
+      "qr_code": "{\"product_id\":\"SHOE001\",\"name\":\"テストランニングシューズ\",\"category\":\"shoes\",\"price\":8000,\"sizes\":[\"S\",\"M\",\"L\",\"XL\"],\"stock\":10,\"brand\":\"TestSport\",\"notes\":\"軽量で快適なランニングシューズ\"}",
+      "should_succeed": true,
+      "expected_product_id": "SHOE001"
+    },
+    {
+      "name": "Valid Accessory Product",
+      "qr_code": "{\"product_id\":\"ACC001\",\"name\":\"テストスポーツバッグ\",\"category\":\"accessories\",\"price\":3000,\"sizes\":[\"F\"],\"stock\":5,\"brand\":\"TestBag\",\"notes\":\"多機能スポーツバッグ\"}",
+      "should_succeed": true,
+      "expected_product_id": "ACC001"
+    },
+    {
+      "name": "Out of Stock Product",
+      "qr_code": "{\"product_id\":\"SOLD001\",\"name\":\"売り切れ商品\",\"category\":\"limited\",\"price\":5000,\"sizes\":[\"M\"],\"stock\":0,\"brand\":\"TestLimited\",\"notes\":\"限定商品（売り切れ）\"}",
+      "should_succeed": true,
+      "expected_product_id": "SOLD001"
+    },
+    {
+      "name": "Invalid JSON",
+      "qr_code": "invalid_json_data",
+      "should_succeed": false,
+      "expected_error": "qrCodeInvalid"
+    },
+    {
+      "name": "Empty QR Code",
+      "qr_code": "",
+      "should_succeed": false,
+      "expected_error": "qrCodeInvalid"
+    },
+    {
+      "name": "Incomplete Product Data",
+      "qr_code": "{\"product_id\":\"INCOMPLETE001\",\"name\":\"不完全商品\"}",
+      "should_succeed": false,
+      "expected_error": "qrCodeInvalid"
+    }
+  ]
+}

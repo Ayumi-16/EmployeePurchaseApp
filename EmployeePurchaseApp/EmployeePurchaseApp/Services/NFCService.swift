@@ -2,8 +2,8 @@ import Foundation
 import CoreNFC
 
 /// Provides NFC scanning functionality to authenticate employees.
-final class NFCService: NSObject, NFCNDEFReaderSessionDelegate {
-    private let csvService: CSVService
+open class NFCService: NSObject, NFCNDEFReaderSessionDelegate {
+    internal let csvService: CSVService
     private var session: NFCNDEFReaderSession?
     private var continuation: CheckedContinuation<Employee, Error>?
     private var timeoutTask: Task<Void, Never>?
@@ -11,13 +11,13 @@ final class NFCService: NSObject, NFCNDEFReaderSessionDelegate {
 
     private let SESSION_TIMEOUT: UInt64 = 20_000_000_000
 
-    init(csvService: CSVService) {
+    public init(csvService: CSVService) {
         self.csvService = csvService
         super.init()
     }
 
     /// Starts an NFC reader session and returns the authenticated employee.
-    func startSession() async throws -> Employee {
+    public func startSession() async throws -> Employee {
         guard NFCNDEFReaderSession.readingAvailable else {
             throw AppError.nfcUnavailable
         }
@@ -30,15 +30,19 @@ final class NFCService: NSObject, NFCNDEFReaderSessionDelegate {
             session.begin()
 
             timeoutTask = Task { [weak self] in
-                try await Task.sleep(nanoseconds: SESSION_TIMEOUT)
-                guard let self, let _ = self.continuation else { return }
-                self.resumeContinuation(with: .failure(AppError.nfcReadFailed))
+                do {
+                    try await Task.sleep(nanoseconds: self?.SESSION_TIMEOUT ?? 20_000_000_000)
+                    guard let self, let _ = self.continuation else { return }
+                    self.resumeContinuation(with: .failure(AppError.nfcReadFailed))
+                } catch {
+                    // Task was cancelled, which is expected behavior
+                }
             }
         }
     }
 
     /// Ends the current NFC session if active.
-    func stopSession() {
+    public func stopSession() {
         timeoutTask?.cancel()
         timeoutTask = nil
         session?.invalidate()
@@ -61,11 +65,11 @@ final class NFCService: NSObject, NFCNDEFReaderSessionDelegate {
 
     // MARK: - NFCNDEFReaderSessionDelegate
 
-    func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
+    public func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
         session.alertMessage = "スキャン中です"
     }
 
-    func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
+    public func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
         let appError: AppError
         if let nfcError = error as? NFCReaderError,
            nfcError.code == .readerSessionInvalidationErrorUserCanceled {
@@ -77,7 +81,7 @@ final class NFCService: NSObject, NFCNDEFReaderSessionDelegate {
         resumeContinuation(with: .failure(appError))
     }
 
-    func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
+    public func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
         guard
             let record = messages.first?.records.first,
             let employeeId = extractEmployeeId(from: record)

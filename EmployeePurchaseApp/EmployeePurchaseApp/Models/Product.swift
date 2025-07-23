@@ -1,23 +1,23 @@
 import Foundation
 
 /// Represents a purchasable product decoded from a QR code JSON payload.
-struct Product: Codable {
+public struct Product: Codable {
     /// Unique product identifier.
-    let productId: String
+    public let productId: String
     /// Product name.
-    let name: String
+    public let name: String
     /// Category such as shoes or clothes.
-    let category: String
+    public let category: String
     /// Unit price of the product.
-    let price: Int
+    public let price: Int
     /// Available size options.
-    let sizes: [String]
+    public let sizes: [String]
     /// Remaining stock quantity.
-    let stock: Int
+    public let stock: Int
     /// Brand or manufacturer.
-    let brand: String
+    public let brand: String
     /// Additional information.
-    let notes: String
+    public let notes: String
 
     private enum CodingKeys: String, CodingKey {
         case productId = "product_id"

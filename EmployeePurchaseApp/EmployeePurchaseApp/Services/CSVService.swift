@@ -1,15 +1,15 @@
 import Foundation
 
 /// Handles CSV file operations such as reading employee data and writing purchase history.
-final class CSVService {
+open class CSVService {
     private let fileManager: FileManager
 
-    init(fileManager: FileManager = .default) {
+    public init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
     }
 
     /// Returns the URL for the application's Documents directory.
-    func documentsURL() -> URL {
+    public func documentsURL() -> URL {
         let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         guard let documentURL = urls.first else {
             return URL(fileURLWithPath: NSTemporaryDirectory())
@@ -24,13 +24,13 @@ final class CSVService {
     }
 
     /// Checks if a file exists in the Documents directory.
-    func fileExists(named fileName: String) -> Bool {
+    public func fileExists(named fileName: String) -> Bool {
         let exists = fileManager.fileExists(atPath: fileURL(fileName: fileName).path)
         return exists
     }
 
     /// Loads employee master data from `employees.csv`.
-    func loadEmployees() async throws -> [Employee] {
+    public func loadEmployees() async throws -> [Employee] {
         let fileName = "employees.csv"
         guard fileExists(named: fileName) else {
             throw AppError.fileNotFound
@@ -67,7 +67,7 @@ final class CSVService {
     }
 
     /// Appends a purchase record to `purchases.csv`.
-    func appendPurchase(_ purchase: Purchase) async throws {
+    public func appendPurchase(_ purchase: Purchase) async throws {
         let url = fileURL(fileName: "purchases.csv")
 
         try await Task.detached(priority: .utility) {

@@ -1,0 +1,6 @@
+purchase_date,employee_id,employee_name,product_id,product_name,category,size,quantity,unit_price,total_amount,payment_method,status,brand,notes
+2025-01-01 10:00:00,EMP001,田中太郎,SHOE001,テストランニングシューズ,shoes,M,1,8000,8000,cash,success,TestSport,軽量で快適なランニングシューズ
+2025-01-02 14:30:00,EMP002,佐藤花子,ACC001,テストスポーツバッグ,accessories,F,2,3000,6000,payrollDeduction,success,TestBag,多機能スポーツバッグ
+2025-01-03 09:15:00,EMP003,鈴木次郎,CLOTH001,テストTシャツ,clothing,L,3,2500,7500,cash,success,TestWear,吸汗速乾素材のTシャツ
+2025-01-04 16:45:00,TEST001,テスト太郎,SHOE001,テストランニングシューズ,shoes,L,1,8000,8000,payrollDeduction,success,TestSport,テスト購入
+2025-01-05 11:20:00,ADMIN001,管理者,ACC001,テストスポーツバッグ,accessories,F,1,3000,3000,cash,failure,TestBag,決済エラーテスト
